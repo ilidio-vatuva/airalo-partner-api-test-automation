@@ -1,0 +1,1 @@
+# airalo-partner-api-automation
