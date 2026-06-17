@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       base_url:
-        description: 'Base URL for the API'
+        description: 'Base URL for the API (include version path)'
         required: false
         type: string
-        default: 'https://sandbox-partners-api.airalo.com'
+        default: 'https://sandbox-partners-api.airalo.com/v2'
 
 jobs:
   api-tests:
@@ -31,7 +31,7 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: |
           mkdir -p src/test/resources
-          printf "base_url=%s\nclient_id=%s\nclient_secret=%s\n" \
+          printf "base.url=%s\nclient.id=%s\nclient.secret=%s\npackage.id=moshi-moshi-7days-1gb\norder.quantity=6\n" \
             "$BASE_URL" "$CLIENT_ID" "$CLIENT_SECRET" \
             > src/test/resources/config.properties
 
