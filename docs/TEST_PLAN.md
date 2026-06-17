@@ -51,7 +51,12 @@ This test plan covers **functional API testing** of the Airalo Partner API (`htt
 | 1.2 | Request token with invalid client_id | 401/422 with error message |
 | 1.3 | Request token with invalid client_secret | 401/422 with error message |
 | 1.4 | Request token with empty credentials | 401/422 with error message |
-| 1.5 | Request token with missing grant_type | 401/422 with error message |
+
+### Known Bugs (Expected Failures)
+
+| # | Test Case | Actual Behavior | Expected Behavior |
+|---|-----------|-----------------|-------------------|
+| 1.5 | Request token with missing grant_type | 200 OK, token issued | 400/401/422 with error message |
 
 ---
 
@@ -70,6 +75,7 @@ This test plan covers **functional API testing** of the Airalo Partner API (`htt
 | 2.7 | Validate each sim contains expected fields | `id`, `iccid`, `lpa`, `matching_id`, `qrcode`, `qrcode_url`, `apn_type`, `apn_value`, `is_roaming`, `direct_apple_installation_url` are present |
 | 2.8 | Submit order with optional `description` field | 200 OK, description is reflected in response |
 | 2.9 | Submit order with `to_email` and `sharing_option[]` | 200 OK, order is created successfully |
+| 2.24 | Submit order with multiple `sharing_option[]` (pdf, link) and multiple `copy_address[]` | 200 OK, order is created with all sharing options and copy addresses |
 
 ### Negative Tests
 
@@ -86,6 +92,7 @@ This test plan covers **functional API testing** of the Airalo Partner API (`htt
 | 2.18 | Submit order with invalid `brand_settings_name` | 422 with "The selected brand settings name is invalid." |
 | 2.19 | Submit order with `to_email` but missing `sharing_option[]` | 422 with validation error |
 | 2.20 | Submit order with invalid email format for `to_email` | 422 with validation error |
+| 2.25 | Submit order with invalid `copy_address[]` email format | 422 with validation error |
 
 ### Known Bugs (Expected Failures)
 
@@ -94,6 +101,7 @@ This test plan covers **functional API testing** of the Airalo Partner API (`htt
 | 2.21 | Submit order with empty body (auth header only) | 500 Internal Server Error | 422 with missing required fields message |
 | 2.22 | Submit order with `to_email` = `valid_email@com` | Accepted as valid | 422 with invalid email error |
 | 2.23 | Submit order with `type` = `esim` | Creates order as `sim` | Should reject invalid type or honor the value |
+| 2.26 | Submit order with `copy_address[]` = `user@yopmailcom` (missing TLD) | Accepted as valid | 422 with invalid email error |
 
 ---
 
@@ -108,7 +116,7 @@ This test plan covers **functional API testing** of the Airalo Partner API (`htt
 | 3.3 | Validate `meta.message` is `"success"` | Message is appropriate |
 | 3.4 | Validate eSIM contains expected fields | `id`, `iccid`, `lpa`, `matching_id`, `qrcode`, `qrcode_url`, `direct_apple_installation_url`, `apn_type`, `apn_value`, `is_roaming`, `apn`, `sharing` are present |
 | 3.5 | Validate `simable` object contains order details | `id`, `code`, `package_id`, `quantity`, `type`, `description`, `esim_type`, `validity`, `package`, `data`, `price`, `status` are present |
-| 3.6 | Validate `simable.status` is `"Completed"` | Order status reflects completion |
+| 3.6 | Validate `simable.status.name` is `"Completed"` | Order status reflects completion (status is an object with `name` and `slug`) |
 | 3.7 | Validate eSIM details match the order response | Fields like `iccid`, `lpa`, `matching_id`, `qrcode` are consistent between order and get-details responses |
 
 ### Negative Tests
@@ -118,14 +126,23 @@ This test plan covers **functional API testing** of the Airalo Partner API (`htt
 | 3.8 | Get eSIM with invalid/non-existent ICCID | 404 or appropriate error |
 | 3.9 | Get eSIM without authorization header | 401 Unauthorized |
 | 3.10 | Get eSIM with expired/invalid token | 401 Unauthorized |
-| 3.11 | Get eSIM with empty ICCID | 404 or 422 |
 
 ### Known Bugs (Expected Failures)
 
 | # | Test Case | Actual Behavior | Expected Behavior |
 |---|-----------|-----------------|-------------------|
+| 3.11 | Get eSIM with empty ICCID | 200 OK (returns list of SIMs) | 404 or 422 error |
 | 3.12 | Order returns ICCID "abc" → navigate to `sharing.link` → eSIM details page shows same ICCID "abc" | `sharing.link` page displays a different ICCID "xyz" | ICCID on the sharing page should match the one returned in the order |
 | 3.13 | Verify `direct_apple_installation_url` is functional | URL is broken | URL should be valid and accessible |
+
+### Manual Tests
+
+These tests require browser interaction and cannot be fully automated via API calls alone.
+
+| # | Test Case | Steps | Expected |
+|---|-----------|-------|----------|
+| 3.12 | Sharing link page shows correct ICCID | 1. Create order via API<br>2. Extract `sharing.link` from SIM response<br>3. Open URL in browser<br>4. Verify displayed ICCID matches the one from the API response | ICCID on the sharing page matches the order's ICCID |
+| 3.13 | Apple installation URL is functional | 1. Create order via API<br>2. Extract `direct_apple_installation_url` from SIM response<br>3. Open URL on an iOS device or simulator<br>4. Verify the eSIM installation flow initiates | URL should be accessible and trigger the eSIM installation prompt |
 
 ---
 
