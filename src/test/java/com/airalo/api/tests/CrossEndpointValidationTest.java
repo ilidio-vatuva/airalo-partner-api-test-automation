@@ -7,6 +7,8 @@ import com.airalo.api.config.ApiConfig;
 import com.airalo.api.model.ApiResponse;
 import com.airalo.api.model.Order;
 import com.airalo.api.model.Sim;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,6 +22,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Airalo Partner API")
+@Feature("Cross-Endpoint Validation")
 @DisplayName("Cross-Endpoint Validation Tests")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CrossEndpointValidationTest extends BaseTest {

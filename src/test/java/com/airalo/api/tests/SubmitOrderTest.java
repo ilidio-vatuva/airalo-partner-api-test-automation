@@ -6,6 +6,8 @@ import com.airalo.api.config.ApiConfig;
 import com.airalo.api.model.ApiResponse;
 import com.airalo.api.model.Order;
 import com.airalo.api.model.Sim;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +24,8 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Airalo Partner API")
+@Feature("Submit Order")
 @DisplayName("Submit Order Tests")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class SubmitOrderTest extends BaseTest {

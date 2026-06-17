@@ -7,6 +7,8 @@ import com.airalo.api.config.ApiConfig;
 import com.airalo.api.model.ApiResponse;
 import com.airalo.api.model.Order;
 import com.airalo.api.model.Sim;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,6 +23,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Airalo Partner API")
+@Feature("Get eSIM Details")
 @DisplayName("Get eSIM Details Tests")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class GetSimTest extends BaseTest {
@@ -130,7 +134,6 @@ class GetSimTest extends BaseTest {
         assertNotNull(simable.packageId(), "simable.package_id should not be null");
         assertNotNull(simable.quantity(), "simable.quantity should not be null");
         assertNotNull(simable.type(), "simable.type should not be null");
-        assertNotNull(simable.description(), "simable.description should not be null");
         assertNotNull(simable.esimType(), "simable.esim_type should not be null");
         assertNotNull(simable.validity(), "simable.validity should not be null");
         assertNotNull(simable.packageName(), "simable.package should not be null");

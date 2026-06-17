@@ -4,6 +4,8 @@ import com.airalo.api.client.AuthClient;
 import com.airalo.api.config.ApiConfig;
 import com.airalo.api.model.ApiResponse;
 import com.airalo.api.model.TokenData;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Airalo Partner API")
+@Feature("Authentication")
 @DisplayName("Authentication Tests")
 class AuthenticationTest extends BaseTest {
 
