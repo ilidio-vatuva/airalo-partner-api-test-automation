@@ -54,6 +54,8 @@ class GetSimTest extends BaseTest {
                 .map(Sim::iccid)
                 .toList();
         assertFalse(orderIccids.isEmpty(), "Order should contain at least one eSIM");
+
+        SimClient.waitForOrderStatus(token, orderIccids.get(0));
     }
 
     @Test
