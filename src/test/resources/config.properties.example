@@ -1,0 +1,9 @@
+# Airalo Partner API Test Automation Configuration
+# Copy this file to config.properties and fill in your actual credentials
+
+base.url=https://partners-api.airalo.com/v2
+client.id=YOUR_CLIENT_ID
+client.secret=YOUR_CLIENT_SECRET
+package.id=moshi-moshi-7days-1gb
+order.quantity=6
+
