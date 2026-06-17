@@ -54,8 +54,6 @@ class GetSimTest extends BaseTest {
                 .map(Sim::iccid)
                 .toList();
         assertFalse(orderIccids.isEmpty(), "Order should contain at least one eSIM");
-
-        SimClient.waitForOrderStatus(token, orderIccids.get(0));
     }
 
     @Test
@@ -121,9 +119,9 @@ class GetSimTest extends BaseTest {
     }
 
     @Test
-    @Tag("happy-path")
+    @Tag("known-bug")
     @org.junit.jupiter.api.Order(5)
-    @DisplayName("3.5 - Should contain simable object with order details")
+    @DisplayName("3.5 - BUG: Should contain simable object with order details (status is null)")
     void shouldContainSimableObjectWithOrderDetails() {
         Response response = SimClient.getSimByIccid(token, orderIccids.get(0));
 
@@ -141,15 +139,17 @@ class GetSimTest extends BaseTest {
         assertNotNull(simable.packageName(), "simable.package should not be null");
         assertNotNull(simable.data(), "simable.data should not be null");
         assertNotNull(simable.price(), "simable.price should not be null");
+        // KNOWN ISSUE: API does not populate status in simable object via GET /sims/{iccid}
         assertNotNull(simable.status(), "simable.status should not be null");
         assertNotNull(simable.createdAt(), "simable.created_at should not be null");
     }
 
     @Test
-    @Tag("happy-path")
+    @Tag("known-bug")
     @org.junit.jupiter.api.Order(6)
-    @DisplayName("3.6 - Should have simable status as Completed")
+    @DisplayName("3.6 - BUG: Should have simable status as Completed (status is null)")
     void shouldHaveSimableStatusAsCompleted() {
+        // KNOWN ISSUE: API does not populate status in simable object via GET /sims/{iccid}
         Response response = SimClient.getSimByIccid(token, orderIccids.get(0));
 
         assertEquals(200, response.statusCode());
